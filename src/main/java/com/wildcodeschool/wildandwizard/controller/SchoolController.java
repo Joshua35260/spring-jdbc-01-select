@@ -44,4 +44,23 @@ public class SchoolController {
         model.addAttribute("school", repository.save(name, capacity, country));
         return "school_get";
     }
+
+    @GetMapping("/school/update")
+    public String updateSchool(Model model, @RequestParam Long id) {
+
+        model.addAttribute("school", repository.findById(id));
+
+        return "school_update";
+    }
+
+    @PostMapping("/school/update")
+    public String updateSchool(Model model,
+    @RequestParam Long id,
+    @RequestParam String name,
+    @RequestParam Long capacity,
+    @RequestParam String country
+    ) {
+        model.addAttribute("school", repository.update(id, name, capacity, country));
+        return "school_get";
+    }
 }

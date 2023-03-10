@@ -11,6 +11,20 @@
     <li th:text="|Capacity: ${school.capacity}|">$capacity</li>
     <li th:text="|Country: ${school.country}|">$country</li>
 </ul>
+<form action="/school/update" method="post">
+    <input th:value="${school.id}" name="id" type="hidden">
+    <label for="school-name">School:</label>
+    <input th:value="school-name" name="name" placeholder="Poudlard" required type="text">
+    <br><br>
+    <label for="school-capacity">Capacity:</label>
+    <input th:value="school-capacity" name="capacity" placeholder="300" required type="number">
+    <br><br>
+    <label for="school-country">Country:</label>
+    <input th:value="school-country" name="country" placeholder="England" required type="text">
+    <br><br>
+
+    <input type="submit" value="Modify">
+</form>
 <a href="/">Go back</a>
 </body>
 </html>

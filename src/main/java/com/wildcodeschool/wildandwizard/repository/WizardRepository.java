@@ -26,11 +26,9 @@ public class WizardRepository {
         ResultSet resultSet = null;
         try {
             connection = DriverManager.getConnection(
-                    DB_URL, DB_USER, DB_PASSWORD
-            );
+                    DB_URL, DB_USER, DB_PASSWORD);
             statement = connection.prepareStatement(
-                    "SELECT * FROM wizard;"
-            );
+                    "SELECT * FROM wizard;");
             resultSet = statement.executeQuery();
 
             List<Wizard> wizards = new ArrayList<>();
@@ -63,11 +61,9 @@ public class WizardRepository {
         ResultSet resultSet = null;
         try {
             connection = DriverManager.getConnection(
-                    DB_URL, DB_USER, DB_PASSWORD
-            );
+                    DB_URL, DB_USER, DB_PASSWORD);
             statement = connection.prepareStatement(
-                    "SELECT * FROM wizard WHERE id = ?;"
-            );
+                    "SELECT * FROM wizard WHERE id = ?;");
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
 
@@ -97,11 +93,9 @@ public class WizardRepository {
         ResultSet resultSet = null;
         try {
             connection = DriverManager.getConnection(
-                    DB_URL, DB_USER, DB_PASSWORD
-            );
+                    DB_URL, DB_USER, DB_PASSWORD);
             statement = connection.prepareStatement(
-                    "SELECT * FROM wizard WHERE last_name LIKE ?;"
-            );
+                    "SELECT * FROM wizard WHERE last_name LIKE ?;");
             statement.setString(1, lastName);
             resultSet = statement.executeQuery();
 
@@ -128,37 +122,63 @@ public class WizardRepository {
     }
 
     public Wizard save(String firstName, String lastName, Date birthday,
-               String birthPlace, String biography, boolean muggle) {
+            String birthPlace, String biography, boolean muggle) {
 
-    try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-         PreparedStatement statement = connection.prepareStatement(
-                 "INSERT INTO wizard (first_name, last_name, birthday, birth_place, biography, is_muggle) VALUES (?, ?, ?, ?, ?, ?)",
-                 Statement.RETURN_GENERATED_KEYS)
-    ) {
-        statement.setString(1, firstName);
-        statement.setString(2, lastName);
-        statement.setDate(3, birthday);
-        statement.setString(4, birthPlace);
-        statement.setString(5, biography);
-        statement.setBoolean(6, muggle);
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                PreparedStatement statement = connection.prepareStatement(
+                        "INSERT INTO wizard (first_name, last_name, birthday, birth_place, biography, is_muggle) VALUES (?, ?, ?, ?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setDate(3, birthday);
+            statement.setString(4, birthPlace);
+            statement.setString(5, biography);
+            statement.setBoolean(6, muggle);
 
-        if (statement.executeUpdate() != 1) {
-            throw new SQLException("failed to insert data");
+            if (statement.executeUpdate() != 1) {
+                throw new SQLException("failed to insert data");
+            }
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getLong(1);
+                return new Wizard(id, firstName, lastName, birthday,
+                        birthPlace, biography, muggle);
+            } else {
+                throw new SQLException("failed to get inserted id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return null;
+    }
 
-        ResultSet generatedKeys = statement.getGeneratedKeys();
+    public Wizard update(Long id, String firstName, String lastName, Date birthday,
+            String birthPlace, String biography, boolean muggle) {
 
-        if (generatedKeys.next()) {
-            Long id = generatedKeys.getLong(1);
+        try {
+            Connection connection = DriverManager.getConnection(
+                    DB_URL, DB_USER, DB_PASSWORD);
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE wizard SET first_name=?, last_name=?, birthday=?, birth_place=?, biography=?, is_muggle=? WHERE id=?");
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setDate(3, birthday);
+            statement.setString(4, birthPlace);
+            statement.setString(5, biography);
+            statement.setBoolean(6, muggle);
+            statement.setLong(7, id);
+
+            if (statement.executeUpdate() != 1) {
+                throw new SQLException("failed to update data");
+            }
             return new Wizard(id, firstName, lastName, birthday,
                     birthPlace, biography, muggle);
-        } else {
-            throw new SQLException("failed to get inserted id");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
 }
