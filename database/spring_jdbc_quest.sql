@@ -50,6 +50,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `wizard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+
+CREATE USER 'h4rryp0tt3r'@'%' IDENTIFIED BY 'Horcrux4life!';
+ALTER USER 'h4rryp0tt3r'@'%' IDENTIFIED WITH mysql_native_password BY 'Horcrux4life!';
+
 CREATE TABLE `wizard` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(100) NOT NULL,
