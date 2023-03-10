@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,4 +126,39 @@ public class WizardRepository {
         }
         return null;
     }
+
+    public Wizard save(String firstName, String lastName, Date birthday,
+               String birthPlace, String biography, boolean muggle) {
+
+    try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+         PreparedStatement statement = connection.prepareStatement(
+                 "INSERT INTO wizard (first_name, last_name, birthday, birth_place, biography, is_muggle) VALUES (?, ?, ?, ?, ?, ?)",
+                 Statement.RETURN_GENERATED_KEYS)
+    ) {
+        statement.setString(1, firstName);
+        statement.setString(2, lastName);
+        statement.setDate(3, birthday);
+        statement.setString(4, birthPlace);
+        statement.setString(5, biography);
+        statement.setBoolean(6, muggle);
+
+        if (statement.executeUpdate() != 1) {
+            throw new SQLException("failed to insert data");
+        }
+
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+
+        if (generatedKeys.next()) {
+            Long id = generatedKeys.getLong(1);
+            return new Wizard(id, firstName, lastName, birthday,
+                    birthPlace, biography, muggle);
+        } else {
+            throw new SQLException("failed to get inserted id");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
 }

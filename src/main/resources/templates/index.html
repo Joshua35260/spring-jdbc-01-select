@@ -21,7 +21,30 @@
         <input name="lastName" placeholder="Weasley" required type="text">
         <input type="submit" value="Send">
     </form>
+
+    <form action="/wizard/create" method="post">
+        <label for="wizard-first-name">First name:</label>
+        <input id="wizard-first-name" name="firstName" placeholder="Harry" required type="text">
+    
+        <label for="wizard-last-name">Last name:</label>
+        <input id="wizard-last-name" name="lastName" placeholder="Potter" required type="text">
+    
+        <label for="wizard-birthday">Birthday:</label>
+        <input id="wizard-birthday" name="birthday" placeholder="1980-07-31" required type="date">
+    
+        <label for="wizard-birth-place">Birth Place:</label>
+        <input id="wizard-birth-place" name="birthPlace" placeholder="London" required type="text">
+    
+        <label for="wizard-biography">Biography:</label>
+        <textarea id="wizard-biography" name="biography"></textarea>
+    
+        <label for="wizard-is-muggle">Is Muggle ?</label>
+        <input id="wizard-is-muggle" name="muggle" type="checkbox" value="true">
+    
+        <input type="submit" value="Send">
+    </form>
 </section>
+
 <section>
     <h3>Search School:</h3>
     <a href="/schools">Browse all schools</a>
@@ -37,6 +60,21 @@
         <input name="country" placeholder="USA" required type="text">
         <input type="submit" value="Send">
     </form>
+
+    <form action="/school/create" method="post">
+        <label for="school-name">School:</label>
+        <input id="school-name" name="name" placeholder="Poudlard" required type="text">
+    
+        <label for="school-capacity">Capacity:</label>
+        <input id="school-capacity" name="capacity" placeholder="300" required type="number">
+    
+        <label for="school-country">Country:</label>
+        <input id="school-country" name="country" placeholder="England" required type="text">
+    
+    
+        <input type="submit" value="Send">
+    </form>
+
 </section>
 </body>
 </html>
