@@ -63,4 +63,12 @@ public class SchoolController {
         model.addAttribute("school", repository.update(id, name, capacity, country));
         return "school_get";
     }
+
+    @GetMapping("/school/delete")
+    public String deleteSchool(Model model, @RequestParam Long id) {
+
+        repository.deleteById(id);
+
+        return "redirect:/schools";
+    }
 }

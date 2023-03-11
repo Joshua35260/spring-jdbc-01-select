@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,5 +88,14 @@ public class WizardController {
 
         return "wizard_get";
     }
-
+    
+    @GetMapping("/wizard/delete")
+    public String deleteWizard(@RequestParam("id") Long id) {
+        repository.deleteById(id);
+        return "redirect:/wizards";
+    }
+    
+    
+    
+    
 }
